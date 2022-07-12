@@ -1,0 +1,43 @@
+:root {
+    --dark-primary-color: #1976D2;
+    --light-primary-color: #BBDEFB;
+    --primary-color: #2196F3;
+    --text-icons-color: #FFFFFF;
+    --primary-text: #212121;
+    --secondary-text: #757575;
+    --divider-color: #BDBDBD;
+    --accent-color: #009688;
+}
+
+body {
+    background-color: #f7f5f8;
+}
+
+#window{
+    margin-top: 50px;
+    background-color: #FFFFFF;
+    color: var(--primary-text);
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 5px black;
+}
+.swapbox_select {
+    width: 50%;
+    float: left;
+}
+.swapbox{
+    overflow: auto;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: 0.5px dotted var(--divider-color);
+}
+.token_select{
+    padding:5px 0;
+}
+.token_select:hover{
+    background-color: #464646;
+    cursor: pointer;
+    
+}
