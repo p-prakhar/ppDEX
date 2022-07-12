@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "lite-server": "^2.3.0"
+    "lite-server": "^2.6.1"
   },
   "dependencies": {
     "web3": "^1.7.4"
