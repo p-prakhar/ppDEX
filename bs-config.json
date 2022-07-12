@@ -1,5 +1,6 @@
-{
-  "server": {
-    "baseDir": ["./src", "./build/contracts"]
-  }
+module.exports = {
+    port: process.env.PORT,
+    "server": {
+      "baseDir": ["./src", "./build/contracts"]
+    }
 }
