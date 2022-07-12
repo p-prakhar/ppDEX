@@ -17,8 +17,9 @@
     "lite-server": "^2.6.1"
   },
   "dependencies": {
-    "web3": "^1.7.4",
-    "lite-server": "^2.6.1"
+    "lite-server": "^2.6.1",
+    "nodemon": "^2.0.19",
+    "web3": "^1.7.4"
   },
   "engines": {
     "node": "16.15.1"
