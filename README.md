@@ -11,6 +11,7 @@
     - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
       - [Basic Terminology and Definitions](#basic-terminology-and-definitions)
+      - [Project Structure](#project-structure)
       - [Technologies](#technologies)
   - [How It Works](#how-it-works)
       - [Creating Exchanges](#creating-exchanges)
@@ -44,6 +45,16 @@ require guaranteed on-chain liquidity.
 - Liquidity Pool - Pool of tokens locked in a smart contract.
 
 
+#### Project Structure
+- [README.md](README.md) : README file for the project. Contains project description, table of contents, and installation instructions.
+- [LICENSE](LICENSE) : LICENSE file .
+- [assets](assets) : Assets folder containing images, logos, and other assets.
+- [contracts](contracts) : Contracts folder containing smart contracts.
+- [src](src) : Source folder containing the HTML, CSS, and JavaScript files for the project. Majorly used for the front-end.
+- [build](build) : Build folder containing the compiled files for the project. Majorly used for the back-end i.e. deploying the smart contracts to the blockchain.
+- [tests](tests) : Tests folder containing unit tests for the project.
+
+
 #### Technologies
 
 - Front End: HTML, CSS (+ BootStrap) , JavaScript (+ Jquery)
@@ -61,7 +72,7 @@ or build a local instance of the website using the instructions given [here](#in
 
 
 #### Creating Exchanges
- [ppSwapExchangeCreator](contracts/ppdex.sol) deploys a separate exchange contract for each ERC20 token. These exchange contracts each hold a reserve of ETH and their associated ERC20. This allows trades between the two based on relative supply. This is achieved using the launchExhange() function.
+ [ppSwapExchangeCreator](contracts/ppdex.sol) is a smart contract that serves as both a factory and registry for ppDEX exchanges. The public function launchExchange() allows any Ethereum user to deploy an exchange contract for any ERC20 that does not already have one.
  Following is the implementation of the same
 
 ``` solidity
