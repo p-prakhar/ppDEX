@@ -61,7 +61,7 @@ or build a local instance of the website using the instructions given [here](#in
 
 
 #### Creating Exchanges
- [ppSwapExchangeCreator](contracts/ppdex.sol) is a smart contract that serves as both a factory and registry for ppDEX exchanges. The public function launchExchange() allows any Ethereum user to deploy an exchange contract for any ERC20 that does not already have one.
+ [ppSwapExchangeCreator](contracts/ppdex.sol) deploys a separate exchange contract for each ERC20 token. These exchange contracts each hold a reserve of ETH and their associated ERC20. This allows trades between the two based on relative supply. This is achieved using the launchExhange() function.
  Following is the implementation of the same
 
 ``` solidity
