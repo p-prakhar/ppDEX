@@ -24,7 +24,6 @@
       - [Prakhar Pandey](#prakhar-pandey)
       - [Pratham Pekamwar](#pratham-pekamwar)
   - [License](#license)
-  - [Back To The Top](#back-to-the-top)
 
 ---
 
@@ -175,5 +174,5 @@ Note: Here `div` is just a function that divides two numbers but in a safe manne
 
 - MIT License (MIT) (Truffle) - [MIT License](LICENSE)
 
-[Back To The Top](#ppdex)
+    [Back To The Top](#ppdex)
 ---
