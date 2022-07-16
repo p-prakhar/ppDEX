@@ -229,8 +229,8 @@ Similar Function exists for removing liquidity
 
 - Step 1: Clone this repository into your local machine. (See [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
 - Step 2: Install Node.js and npm. (See [here](https://nodejs.org/en/download/))
-- Step 3: Install Truffle. (See [here](https://truffleframework.com/docs/getting_started/installation))
-- Step 4: Install Ganache. (See [here](https://ethereum.org/developers/testing/ganache-cli))
+- Step 3: Install Truffle. (See [here](https://trufflesuite.com/docs/truffle/getting-started/installation/))
+- Step 4: Install Ganache. (See [here](https://trufflesuite.com/docs/ganache/))
 - Step 5: Install Metamask extension. (See [here](https://metamask.io/))
 - Step 6: Run Ganache and Configure Metamask for the local network. (See [here](https://metamask.io/docs/guide/ethereum-setup.html))
 - Step 7: Run the following command in the project directory:
