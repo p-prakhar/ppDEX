@@ -1,7 +1,10 @@
-![Project Image](assets/logo.jpg)
+![Project Image](assets/logo.png)
 
 # ppDEX
 > Decentralised Exchange Based on Ethereum Blockchain
+
+
+![Home Screen](assets/home.png)
 
 ---
 
