@@ -6,9 +6,7 @@
 
 ---
 
-![Home Screen](assets/home.png)
 
----
 
 ### Table of Contents
 
@@ -35,11 +33,16 @@
 
 ## Introduction
 
+
 ppDEX is a protocol for automated token exchange on Ethereum. It is designed around
 ease-of-use, gas efficiency, censorship resistance, and zero rent extraction. It is useful for
 traders and functions particularily well as a component of other smart contracts which
 require guaranteed on-chain liquidity.
 
+---
+![Home Screen](assets/home.png)
+
+---
 #### Basic Terminology and Definitions
 
 - Ethereum - The blockchain platform used by ppDEX. Read [here](https://ethereum.org/).
