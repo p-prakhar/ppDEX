@@ -1,4 +1,8 @@
-![Project Image](assets/logo.png)
+
+![Project Image](assets/logo.png)</br>
+
+![GitHub last commit](https://img.shields.io/github/last-commit/p-prakhar/ppDEX) ![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&up_color=cyan&up_message=online&url=https%3A%2F%2Fppdex.herokuapp.com) ![GitHub contributors](https://img.shields.io/github/contributors-anon/p-prakhar/ppdex) ![GitHub](https://img.shields.io/github/license/p-prakhar/ppDEX)
+
 
 # ppDEX 
 [Website](http://ppdex.herokuapp.com/)
