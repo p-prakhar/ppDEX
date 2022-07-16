@@ -1,8 +1,10 @@
 ![Project Image](assets/logo.png)
 
-# ppDEX
+# ppDEX 
+[Website](http://ppdex.herokuapp.com/)
 > Decentralised Exchange Based on Ethereum Blockchain
 
+---
 
 ![Home Screen](assets/home.png)
 
