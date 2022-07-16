@@ -2,7 +2,7 @@
 
 # ppDEX 
 [Website](http://ppdex.herokuapp.com/)
-> Decentralised Exchange Based on Ethereum Blockchain
+> Decentralised Exchange hosted on Ethereum Testnet
 
 ---
 
@@ -21,6 +21,7 @@
       - [Setting Prices](#setting-prices)
       - [ETH &#8652; ERC20 Tokens](#eth--erc20-tokens)
       - [Providing Liquidity](#providing-liquidity)
+      - [Fee Structure](#fee-structure)
   - [Future Additions](#future-additions)
   - [Installation](#installation)
   - [References](#references)
@@ -35,7 +36,7 @@
 
 
 ppDEX is a protocol for automated token exchange on Ethereum. It is designed around
-ease-of-use, gas efficiency, censorship resistance, and zero rent extraction. It is useful for
+ease-of-use, censorship resistance, and zero rent extraction. It is useful for
 traders and functions particularily well as a component of other smart contracts which
 require guaranteed on-chain liquidity.
 
@@ -67,7 +68,7 @@ require guaranteed on-chain liquidity.
 
 - Front End: HTML, CSS (+ BootStrap) , JavaScript (+ Jquery)
 - Browser-Block Chain Connectivity: MetaMask, Web3.js
-- Back End: Solidity, Ganache + Truffle (Local Network) (current), Rinkeby (to be deployed)
+- Back End: Solidity, Ganache + Truffle (Local Network) (current), Rinkeby
 
 [Back To The Top](#ppdex)
 
@@ -108,7 +109,7 @@ Following is the implementation for the same
 uint256 TokenPool = invariant.div(EthPool);
 ```
 
-Note: Here `div` is just a function that divides two numbers but in a safe manner, i.e. it does not divide by zero. Invariant is the k value in the above equation. EthPool is the amount of ETH in the pool. TokeinPool is the amount of tokens in the pool.
+Note: Here `div` is just a function that divides two numbers but in a safe manner, i.e. it does not divide by zero. Invariant is the k value in the above equation. EthPool is the amount of ETH in the pool. TokenPool is the amount of tokens in the pool.
 
 
 
@@ -116,16 +117,98 @@ Note: Here `div` is just a function that divides two numbers but in a safe manne
 
 #### ETH &#8652; ERC20 Tokens
 
+Each exchange contract [ppSwap](contracts/ppdex.sol) is associated with a single ERC20 token and holds a liquidity pool of both ETH and that token. The exchange rate between ETH and an ERC20 is based on the relative sizes of their liquidity pools within the contract. This is done by maintaining the relationship eth_pool * token_pool = invariant. This invariant is held constant during trades and only changes when liquidity is added or removed from the market.
+
+A simplified version of ethToToken(), the function for converting ETH to ERC20 tokens, is shown below:
 
 
-
+``` solidity
+function ethToToken(
+  address buyer,
+  address recipient,
+  uint256 ethIn,
+  uint256 minTokensOut
+)
+  internal
+  exchangeInitialized
+{
+  uint256 fee = ethIn.div(FEE_RATE);
+  uint256 newEthPool = ethPool.add(ethIn);
+  uint256 tempEthPool = newEthPool.sub(fee);
+  uint256 newTokenPool = invariant.div(tempEthPool);
+  uint256 tokensOut = tokenPool.sub(newTokenPool);
+  require(tokensOut >= minTokensOut && tokensOut <= tokenPool);
+  ethPool = newEthPool;
+  tokenPool = newTokenPool;
+  invariant = newEthPool.mul(newTokenPool);
+  emit EthToTokenPurchase(buyer, ethIn, tokensOut);
+  require(token.transfer(recipient, tokensOut));
+}
+```
 
 
 
 #### Providing Liquidity
 
+Adding liquidity requires depositing an equivalent value of ETH and ERC20 tokens into the ERC20 token’s associated exchange contract.
+
+The first liquidity provider to join a pool sets the initial exchange rate by depositing what they believe to be an equivalent value of ETH and ERC20 tokens. If this ratio is off, arbitrage traders will bring the prices to equilibrium at the expense of the initial liquidity provider.
+
+The first liquidity can be provided using the following function initializeExchange():
+
+``` solidity
+function initializeExchange(uint256 _tokenAmount) external payable {
+  require(invariant == 0 && totalLpTokens == 0);
+  require(msg.value != 0 && _tokenAmount != 0);
+  ethPool = msg.value;
+  tokenPool = _tokenAmount;
+  invariant = ethPool.mul(tokenPool);
+  lpTokens[msg.sender] = 10000;
+  totalLpTokens = 10000;
+  require(token.transferFrom(msg.sender, address(this), _tokenAmount));
+}
+```
+
+All future liquidity providers deposit ETH and ERC20’s using the exchange rate at the moment of their deposit. If the exchange rate is bad there is a profitable arbitrage opportunity that will correct the price.
+
+Liquidity tokens are minted to track the relative proportion of total reserves that each liquidity provider has contributed. They are highly divisible and can be burned at any time to return a proporitonal share of the markets liquidity to the provider.
+
+Liquidity providers call the addLiquidity() function to deposit into the reserves and mint new liquidity tokens:
 
 
+``` solidity
+function investLiquidity(
+  uint256 _minlpTokens
+)
+  external
+  payable
+  exchangeInitialized
+{
+  require(msg.value > 0 && _minlpTokens > 0);
+  uint256 ethPerLpToken = ethPool.div(totalLpTokens);
+  require(msg.value >= ethPerLpToken);
+  uint256 lpTokensPurchased = msg.value.div(ethPerLpToken);
+  require(lpTokensPurchased >= _minlpTokens);
+  uint256 tokensPerLpToken = tokenPool.div(totalLpTokens);
+  uint256 tokensRequired = lpTokensPurchased.mul(tokensPerLpToken);
+  lpTokens[msg.sender] = lpTokens[msg.sender].add(lpTokensPurchased);
+  totalLpTokens = totalLpTokens.add(lpTokensPurchased);
+  ethPool = ethPool.add(msg.value);
+  tokenPool = tokenPool.add(tokensRequired);
+  invariant = ethPool.mul(tokenPool);
+  emit ProvidingLiquidity(msg.sender, lpTokensPurchased);
+  require(token.transferFrom(msg.sender, address(this), tokensRequired));
+}
+```
+
+Similar Function exists for removing liquidity
+
+#### Fee Structure
+
+- ETH to ERC20 trades
+0.2% fee paid in ETH
+- ERC20 to ETH trades
+0.2% fee paid in ERC20 tokens
 
 
 
@@ -168,6 +251,7 @@ Note: Here `div` is just a function that divides two numbers but in a safe manne
 - ERC20 - [Ethereum Standard Token](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/)
 - Decentralized Applications - [Whiteboard Crypto](https://youtu.be/oPIupbsVimc) (YouTube), [Wiki](https://en.wikipedia.org/wiki/Decentralized_application) (Wikipedia)
 - Smart Contracts - [Whiteboard Crypto](https://youtu.be/pyaIppMhuic) (YouTube), [Wiki](https://en.wikipedia.org/wiki/Smart_contract) (Wikipedia)
+- Liquidity Pool - [Whiteboard Crypto](https://www.youtube.com/watch?v=dVJzcFDo498) (YouTube)
 
 [Back To The Top](#ppdex)
 
